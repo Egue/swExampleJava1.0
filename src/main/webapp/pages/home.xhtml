@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" >
+      
+
+<h:head> </h:head> 
+<h:body> 
+	<h:form id="formMember">
+	<p:messages id="msgs"/>
+		<p:panel id="basic" header = "Registro de Miembros" 
+		footer="Lista de Miembros" style="margin-bottom:20px">
+		<h:panelGrid columns="3" cellspading = "10" id="panelEdit">
+		<p:outputLabel for="idNombreMember" value="Nombre"/>
+		<p:inputText 
+		id="idNombreMember" 
+		value="#{registroPrimeController.newMember.name}"
+		requiredMessage="El campo Nombre es obligatorio" 
+		required="true"
+		></p:inputText>
+		<p:message for="idNombreMember" />
+		
+		<p:outputLabel for="idApellidoMember" value="Apellido"/>
+		<p:inputText 
+		id="idApellidoMember" 
+		value="#{registroPrimeController.newMember.apellido}"
+		requiredMessage="El campo Apellido es obligatorio" 
+		required="true"
+		></p:inputText>
+		<p:message for="idApellidoMember" />
+		
+		<p:outputLabel for="idemailMember" value="Email"/>
+		<p:inputText 
+		id="idemailMember" 
+		value="#{registroPrimeController.newMember.email}"
+		requiredMessage="El campo Email es obligatorio" 
+		required="true"
+		></p:inputText>
+		<p:message for="idemailMember" />
+		
+		<p:outputLabel for="idTelefonoMember" value="Telefono"/>
+		<p:inputText 
+		id="idTelefonoMember" 
+		value="#{registroPrimeController.newMember.phoneNumber}"
+		requiredMessage="El campo No Telefono es obligatorio" 
+		required="true"
+		></p:inputText>
+		<p:message for ="idTelefonoMember" />
+		</h:panelGrid>
+<p:commandButton value="Guardar" id="withIcon"
+ action="#{registroPrimeController.register()}"
+ process="@form"  
+ icon="ui-icon-disk"
+  update="msgs basic tableMembers"/>
+ 
+		</p:panel>
+		
+	<p:dataTable 
+	id="tableMembers" 
+	var="_membersx" value="#{registroPrimeController.memberList}"
+	paginator="true"
+	paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+    rowsPerPageTemplate="2,4,6">
+    <p:column headerText="Id">
+        <h:outputText value="#{_membersx.id}" />
+    </p:column>
+ 
+    <p:column headerText="Nombre">
+        <h:outputText value="#{_membersx.name}" />
+    </p:column>
+ 
+    <p:column headerText="Apellido">
+        <h:outputText value="#{_membersx.apellido}" />
+    </p:column>
+ 
+    <p:column headerText="Email">
+        <h:outputText value="#{_membersx.email}" />
+    </p:column>
+    <p:column headerText="Teléfono">
+        <h:outputText value="#{_membersx.phoneNumber}" />
+    </p:column>
+    <p:column headerText="Acción">
+    
+        <p:commandButton 
+        value="Eliminar" 
+        actionListener="#{registroPrimeController.remove(_membersx.id)}"
+         
+         immediate="true"
+         ajax="false" />
+         
+         <p:commandButton 
+        value="Editar" 
+        actionListener="#{registroPrimeController.setNewMember(_membersx)}"
+         update=":formMember:panelEdit"
+         immediate="true"
+          
+         process="@this" />
+      <p:commandButton 
+      value="ver" 
+      actionListener="#{registroPrimeController.verMember(_membersx)}"
+      
+      update=":formMember:memberDetail"
+      oncomplete="PF('dlgDatosMember').show()" 
+      icon="ui-icon-search"
+      process="@this" />
+    </p:column>
+</p:dataTable>
+
+<p:dialog header="Modal Dialog" widgetVar="dlgDatosMember" modal="true" height="100">
+		<p:outputPanel id="memberDetail" style="text-align:center;">
+			<p:panelGrid columns="2"
+				
+				columnClasses="label,value">
+				<f:facet name="header">
+					<p:outputLabel>Detalle</p:outputLabel>
+						</f:facet>
+
+				<h:outputText value="Id:" />
+				<h:outputText value="#{registroPrimeController.newMember.name}" />
+
+				
+			</p:panelGrid>
+		</p:outputPanel>
+	</p:dialog>
+</h:form>
+	
+	
+
+	
+</h:body> 
+</html>
